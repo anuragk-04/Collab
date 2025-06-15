@@ -6,6 +6,7 @@ import { Login } from "./pages/Login";
 import { Registration } from "./pages/Registration";
 import { Navbar } from "./components/Navbar";
 import { RoomsPage } from "./pages/RoomsPage";
+import { Profile } from "./pages/ProfilePage";
 
 
 const routes = [
@@ -13,6 +14,7 @@ const routes = [
   { path: "/login", element: <Login />, navbar: true },
   { path: "/registration", element: <Registration />, navbar: true },
   { path: "/rooms", element: <RoomsPage />, navbar: false },
+  { path: "/profile", element: <Profile />,  navbar: false}
 ];
 
 function App() {
