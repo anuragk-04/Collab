@@ -51,7 +51,7 @@ export const Login = () => {
       localStorage.setItem('username', responseData.username);
       localStorage.setItem('fullname', responseData.fullname);
 
-      navigate('/whiteboards');
+      navigate('/rooms');
       
     } catch (error) {
       console.log(`error while logging in user : ${error}`);

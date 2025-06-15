@@ -5,11 +5,14 @@ import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
 import { Registration } from "./pages/Registration";
 import { Navbar } from "./components/Navbar";
+import { RoomsPage } from "./pages/RoomsPage";
+
 
 const routes = [
   { path: "/", element: <Home />, navbar: true },
   { path: "/login", element: <Login />, navbar: true },
-  { path: "/registration", element: <Registration />, navbar: true }
+  { path: "/registration", element: <Registration />, navbar: true },
+  { path: "/rooms", element: <RoomsPage />, navbar: false },
 ];
 
 function App() {

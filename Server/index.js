@@ -8,6 +8,12 @@ require("dotenv").config();
 const { MONGO_URL, PORT } = process.env;
 
 const authRoute = require("./routes/authRoutes");
+const roomRoute = require("./routes/roomRoutes");
+const userRoute = require("./routes/userRoutes");
+
+const { verifyAuthHeaderAndRole } = require("./middlewares/authMiddlewares");
+const Roles = require("./constants/Roles");
+
 const server = http.createServer(app);
 
 app.use(cors({
@@ -31,6 +37,15 @@ app.get("/", (req, res) => {
 });
 
 app.use("/", authRoute);
+app.use("/room", roomRoute) // Todo: Authentication to be added after Auth Implementation on UI side: verifyAuthHeaderAndRole([Roles.USER]),
+app.use("/user", userRoute)
+
+/*
+  Testing route for authentication header
+*/
+app.post("/test", verifyAuthHeaderAndRole([Roles.USER]), async (req, res) => {
+  return res.json({ message: 'success'});
+})
 
 server.listen(PORT, () => {
   console.log("server is running on port", PORT);

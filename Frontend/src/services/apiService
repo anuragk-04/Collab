@@ -42,3 +42,33 @@ export const resetPassword = async (userId, reqbody) => {
     throw error;
   }
 }
+
+export const fetchRoomsForUser = async (userId) => {
+    try {
+      const response = await axios.get(`${API_URL}/room/getRoomsForUser/${userId}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      throw error;
+    }
+};
+
+export const createRoomWithMembers = async (reqbody) => {
+  try{
+    const response = await axios.post(`${API_URL}/room/createRoomWithMembers`, reqbody);
+    return response.data;
+  }catch(error){
+    console.error('Error fetching data:', error);
+    throw error;
+  }
+}
+
+export const deleteRoomById = async (roomId) => {
+  try{
+    const response = await axios.delete(`${API_URL}/room/${roomId}`);
+    return response.data;
+  }catch(error){
+    console.error('Error fetching data:', error);
+    throw error;
+  }
+}
