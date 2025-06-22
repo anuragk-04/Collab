@@ -8,7 +8,7 @@ import ConfirmModal from './ConfirmModal';
 import { useNavigate } from 'react-router-dom';
 import { deleteRoomById } from '../services/apiService';
 
-const RoomItem = ({ roomId, name, description, role, memberCnt, lastAccessedAt }) => {
+const RoomItem = ({ roomId,roomTitle, name, description, role, memberCnt, lastAccessedAt }) => {
 
     const navigate = useNavigate();
 
@@ -32,6 +32,7 @@ const RoomItem = ({ roomId, name, description, role, memberCnt, lastAccessedAt }
     const handleOpenRoomConfirm = () => {
         console.log(`handleOpenRoomConfirm called...`);
         localStorage.setItem('roomId', roomId)
+        localStorage.setItem('roomTitle', roomTitle)
         navigate(`../room/${roomId}`)
     }
 

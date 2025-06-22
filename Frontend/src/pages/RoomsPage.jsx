@@ -72,7 +72,7 @@ export const RoomsPage = () => {
                 >
                   <RoomItem
                     roomId={room._id}
-                    name={room.roomTitle}
+                    roomTitle={room.roomTitle}
                     description={room.roomDescription}
                     role={room.role}
                     memberCnt={room.members.length}

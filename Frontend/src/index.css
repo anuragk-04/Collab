@@ -24,8 +24,7 @@ body::-webkit-scrollbar-thumb {
   background: #aecbeb;
   height: 60px;
   display: flex;
-  justify-content: space-around;
-  align-items: center;
+  align-items: 'center';
 }
 
 .menu_button {
