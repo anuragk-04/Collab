@@ -8,28 +8,29 @@ import CallIcon from '@mui/icons-material/Call';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useDispatch, useSelector } from "react-redux";
 import {Info } from '@mui/icons-material';
-import { fetchBoardInfo } from "../services/apiService";
+import { fetchRoomInfo } from "../services/apiService";
 
 const RoomNavbar = () => {
   const roomName = localStorage.getItem('roomTitle');
   const boardMembers = useSelector((state) => state.whiteboard.activeUsers);
   const navigate = useNavigate();
-  const [boardInfo, setBoardInfo] = useState(null);
+  const [roomInfo, setRoomInfo] = useState(null);
   const [openActiveMembers, setOpenActiveMembers] = useState(false);
+  const [openRoomDetails, setOpenRoomDetails] = useState(false);
 
-  const handleClickOpenBoardInfo = async () => {
+  const handleClickOpenRoomInfo = async () => {
       try {
-        const response = await fetchBoardInfo(localStorage.getItem('boardId'));
+        const response = await fetchRoomInfo(localStorage.getItem('roomId'));
         console.log(response);
-        setBoardInfo(response.board);
-        setOpenBoardDetails(true);
+        setRoomInfo(response.room);
+        setOpenRoomDetails(true);
       } catch (error) {
         console.log(error);
       }
     };
   
-    const handleCloseBoardInfo = () => {
-      setOpenBoardDetails(false);
+    const handleCloseRoomInfo = () => {
+      setOpenRoomDetails(false);
     };
 
     const handleAvatarIconsClick = () => {
@@ -169,7 +170,7 @@ const RoomNavbar = () => {
       <Button
         variant="contained"
         startIcon={<Info />}
-        onClick={handleClickOpenBoardInfo}
+        onClick={handleClickOpenRoomInfo}
       >
         Info
       </Button>
@@ -179,33 +180,33 @@ const RoomNavbar = () => {
 
 
 
-      {boardInfo && (
-              <Dialog open={openBoardDetails} onClose={handleCloseBoardInfo} aria-labelledby="board-details-dialog-title">
-                <DialogTitle id="board-details-dialog-title">Board Details</DialogTitle>
+      {roomInfo && (
+              <Dialog open={openRoomDetails} onClose={handleCloseRoomInfo} aria-labelledby="room-details-dialog-title">
+                <DialogTitle id="room-details-dialog-title">Room Details</DialogTitle>
                 <DialogContent>
                   <Typography variant="h6" component="div">
-                    {boardInfo.boardTitle}
+                    {roomInfo.roomTitle}
                   </Typography>
                   <Typography variant="body2" color="textPrimary" component="div" style={{ marginTop: 2 }}>
-                    Description: {boardInfo.boardDescription}
+                    Description: {roomInfo.roomDescription}
                   </Typography>
                   <Typography variant="body2" color="textPrimary" component="div" style={{ marginTop: 15 }}>
-                    Members: {boardInfo.members.length}
+                    Members: {roomInfo.members.length}
                   </Typography>
-                  {boardInfo.members.map((member, index) => (
+                  {roomInfo.members.map((member, index) => (
                     <Typography key={index} variant="body2" color="textPrimary" component="div" style={{ marginTop: 1 }}>
                       {member.memberId} | {member.memberRole} | {member.lastAccessedAt}
                     </Typography>
                   ))}
                   <Typography variant="body2" color="textPrimary" component="div" style={{ marginTop: 15 }}>
-                    Created At: {boardInfo.createdAt}
+                    Created At: {roomInfo.createdAt}
                   </Typography>
                   <Typography variant="body2" color="textPrimary" component="div" style={{ marginTop: 1 }}>
-                    Updated At: {boardInfo.updatedAt}
+                    Updated At: {roomInfo.updatedAt}
                   </Typography>
                 </DialogContent>
                 <DialogActions>
-                  <Button onClick={handleCloseBoardInfo} color="primary">
+                  <Button onClick={handleCloseRoomInfo} color="primary">
                     Close
                   </Button>
                 </DialogActions>
