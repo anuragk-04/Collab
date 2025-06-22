@@ -14,6 +14,9 @@ const userRoute = require("./routes/userRoutes");
 const { verifyAuthHeaderAndRole } = require("./middlewares/authMiddlewares");
 const Roles = require("./constants/Roles");
 
+const { initSocket } = require("./handler/socketHandler");
+const { processCacheToDBStoreForBoardElements } = require("./utils/cronjobs");
+
 const server = http.createServer(app);
 
 app.use(cors({
@@ -29,6 +32,10 @@ mongoose
   })
   .then(() => console.log("MongoDB is connected successfully"))
   .catch((err) => console.error(err));
+
+  setTimeout(() => {
+  initSocket(server); // Initialize socket.io
+}, 1000)
 
 app.use(express.json());
 

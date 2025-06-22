@@ -1,5 +1,5 @@
 const { createRoom, assignUserToRoom, getRoomDetails, removeUserFromRoom, getRoomsForUser, deleteRoomById, createRoomWithMembers } = require("../controllers/roomController")
-// const { addElementsToBoard } = require('../controllers/boardElementController')
+const { addElementsToBoard } = require('../controllers/boardElementController')
 
 const router = require("express").Router();
 
@@ -24,6 +24,9 @@ router.delete('/:roomId', deleteRoomById);
 
 
 router.get('/getRoomsForUser/:userId', getRoomsForUser);
+
+
+router.post('/addElementsToBoard/:roomId', addElementsToBoard);
 
 // API for board element update via HTTP path with boardId
 // router.post('/addElementsToBoard/:boardId', addElementsToBoard);
