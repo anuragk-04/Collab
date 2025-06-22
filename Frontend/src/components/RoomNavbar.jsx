@@ -62,93 +62,122 @@ const RoomNavbar = () => {
   };
 
   return (
-    <div >
+    <div>
       <Grid
-        container
-        height={60}
-        bgcolor='#aecbeb'
-        alignContent='center'
-        size={12}
+  container
+  alignItems="center"
+  justifyContent="space-between"
+  sx={{
+    position: "fixed", // Fixes the layout at the top
+    top: 0,            // Aligns it to the top of the viewport
+    left: 0,           // Ensures it spans the full width
+    width: "100%",     // Full width
+    zIndex: 1000,      // Keeps it above other elements
+    height: 60,        // Fixed height
+    bgcolor: "#aecbeb", // Background color
+    paddingX: 1,       // Horizontal padding
+    boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.2)", // Optional shadow for depth
+  }}
+>
+  {/* Left Section: Back Button and Room Name */}
+  <Grid
+    item
+    xs={12}
+    sm={4}
+    container
+    alignItems="center"
+    paddingLeft={1}
+    spacing={2}
+  >
+    <Grid item>
+      <Button
+        variant="contained"
+        startIcon={<ArrowBackIcon />}
+        onClick={handleBackButtonClick}
       >
-        {/* Left Section: Back Button and Room Name */}
-        <Grid 
-          container
-          size={4}
-          spacing={2}
-          paddingLeft={1}
-        >
-            <Button
-                variant="contained"
-                startIcon={<ArrowBackIcon />}
-                onClick={handleBackButtonClick}
-            >
-                Back
-            </Button>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} color='#1B4F72'>
-                {roomName}
-            </Typography>
-        </Grid>
+        Back
+      </Button>
+    </Grid>
+    <Grid item>
+      <Typography
+        variant="h6"
+        color="#1B4F72"
+        sx={{ flexGrow: 1 }}
+      >
+        {roomName}
+      </Typography>
+    </Grid>
+  </Grid>
 
-        {/* Center Section: Code and Draw */}
-        <Grid
-          container
-          size={4}
-          justifyContent='center'
-          spacing={3}
-        >
-          <Button
-            variant="contained"
-            startIcon={<DrawIcon />}
-            onClick={handleDrawButtonClick}
-          >
-            Draw
-          </Button>
-          <Button
-            variant="contained"
-            startIcon={<CodeIcon />}
-            onClick={handleCodeButtonClick}
-          >
-            Code
-          </Button>
-        </Grid>
+  {/* Center Section: Tools */}
+  <Grid
+    item
+    xs={12}
+    sm={4}
+    container
+    justifyContent="center"
+    spacing={2}
+  >
+    <Grid item>
+      <Button
+        variant="contained"
+        startIcon={<DrawIcon />}
+        onClick={handleDrawButtonClick}
+      >
+        Draw
+      </Button>
+    </Grid>
+    <Grid item>
+      <Button
+        variant="contained"
+        startIcon={<CodeIcon />}
+        onClick={handleCodeButtonClick}
+      >
+        Code
+      </Button>
+    </Grid>
+  </Grid>
 
-        {/* Right Section: Chat and Voice */}
-        <Grid
-          container
-          size={3}
-          justifyContent='center'
-          spacing={4}
-          paddingLeft={5}
-        >
-          <Button
-            variant="contained"
-            startIcon={<ChatIcon />}
-            onClick={handleChatButtonClick}
-          >
-            Chat
-          </Button>
-          <Button
-            variant="contained"
-            startIcon={<CallIcon />}
-            onClick={handleCallButtonClick}
-          >
-            Voice
-          </Button>
-        </Grid>
-        <Grid
-            display='flex'
-            justifyContent='center'
-            size={1}
-            >
-            <Button
-            variant="contained"
-            startIcon={<Info />}
-            onClick={handleClickOpenBoardInfo}
-            >
-            Info
-            </Button>
-        </Grid>
-      </Grid>
+  {/* Right Section: Chat and Info */}
+  <Grid
+    item
+    xs={12}
+    sm={4}
+    container
+    justifyContent="flex-end"
+    spacing={2}
+  >
+    <Grid item>
+      <Button
+        variant="contained"
+        startIcon={<ChatIcon />}
+        onClick={handleChatButtonClick}
+      >
+        Chat
+      </Button>
+    </Grid>
+    <Grid item>
+      <Button
+        variant="contained"
+        startIcon={<CallIcon />}
+        onClick={handleCallButtonClick}
+      >
+        Voice
+      </Button>
+    </Grid>
+    <Grid item>
+      <Button
+        variant="contained"
+        startIcon={<Info />}
+        onClick={handleClickOpenBoardInfo}
+      >
+        Info
+      </Button>
+    </Grid>
+  </Grid>
+</Grid>
+
+
 
       {boardInfo && (
               <Dialog open={openBoardDetails} onClose={handleCloseBoardInfo} aria-labelledby="board-details-dialog-title">

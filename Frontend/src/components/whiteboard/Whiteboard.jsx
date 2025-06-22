@@ -15,7 +15,7 @@ import {
   updatePencilElementWhenMoving,
 } from "./utils";
 import { v4 as uuid } from "uuid";
-import { updateElement as updateElementInStore } from "./WhiteboardSlice";
+import { updateElement as updateElementInStore } from "./whiteboardSlice";
 import { emitCursorPosition } from "./../../socketConn/socketConn";
 
 let emitCursor = true;
@@ -178,7 +178,6 @@ const Whiteboard = () => {
     if (action === actions.DRAWING) {
       // find index of selected element
       const index = elements.findIndex((el) => el.id === selectedElement.id);
-
       if (index !== -1) {
         updateElement(
           {

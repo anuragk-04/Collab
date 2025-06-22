@@ -52,14 +52,6 @@ const Menu = ({canvasRef}) => {
   const navigate = useNavigate();
   const boardMembers = useSelector((state) => state.whiteboard.activeUsers);
 
-  const handleAvatarIconsClick = () => {
-    setOpenActiveMembers(true);
-  }
-
-  const handleActiveIconsClose = () => {
-    setOpenActiveMembers(false);
-  }
-
   
 
   // Function to export canvas to an image
@@ -85,7 +77,7 @@ const Menu = ({canvasRef}) => {
 
   return (
     <>   
-      <div>
+      <div className="menu_container">
         <Grid 
             container 
             display='flex'
@@ -114,11 +106,7 @@ const Menu = ({canvasRef}) => {
             
         </Grid>
 
-        <AvatarGroup max={4} onClick={handleAvatarIconsClick}>
-          {boardMembers.map((member, index) => (
-            <Avatar alt={member.firstName} key={index}>{member.firstName.charAt(0)}</Avatar>
-          ))}
-        </AvatarGroup>
+        
       </div>
       
       

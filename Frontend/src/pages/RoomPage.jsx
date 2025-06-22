@@ -20,7 +20,7 @@ export const RoomPage = () => {
         <Grid>
             <RoomNavbar />
         </Grid>
-        <Grid bgcolor='#EEEEEE'>
+        <Grid bgcolor='#DDDDDD'>
             <Whiteboard />
         </Grid>
     </div>
