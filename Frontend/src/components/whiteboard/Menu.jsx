@@ -17,7 +17,7 @@ import Avatar from '@mui/material/Avatar';
 import AvatarGroup from '@mui/material/AvatarGroup';
 import { IconButton, Dialog, DialogActions, DialogContent, DialogTitle, Typography, Grid } from '@mui/material';
 import { useNavigate } from "react-router-dom";
-import { fetchBoardInfo } from "../../services/apiService";
+import { fetchRoomInfo } from "../../services/apiService";
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import ImageIcon from '@mui/icons-material/Image';
 import html2canvas from 'html2canvas';

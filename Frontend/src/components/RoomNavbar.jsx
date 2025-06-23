@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {Info } from '@mui/icons-material';
 import { fetchRoomInfo } from "../services/apiService";
 
-const RoomNavbar = () => {
+const RoomNavbar = ({setIsChatAppOpen, isChatAppOpen}) => {
   const roomName = localStorage.getItem('roomTitle');
   const boardMembers = useSelector((state) => state.whiteboard.activeUsers);
   const navigate = useNavigate();
@@ -56,6 +56,7 @@ const RoomNavbar = () => {
 
   const handleChatButtonClick = () => {
     console.log('Chat clicked');
+    setIsChatAppOpen((x)=>!x)
   };
 
   const handleCallButtonClick = () => {
@@ -151,6 +152,16 @@ const RoomNavbar = () => {
     <Grid item>
       <Button
         variant="contained"
+        startIcon={<Info />}
+        onClick={handleClickOpenRoomInfo}
+      >
+        Info
+      </Button>
+    </Grid>
+
+    <Grid item>
+      <Button
+        variant="contained"
         startIcon={<ChatIcon />}
         onClick={handleChatButtonClick}
       >
@@ -164,15 +175,6 @@ const RoomNavbar = () => {
         onClick={handleCallButtonClick}
       >
         Voice
-      </Button>
-    </Grid>
-    <Grid item>
-      <Button
-        variant="contained"
-        startIcon={<Info />}
-        onClick={handleClickOpenRoomInfo}
-      >
-        Info
       </Button>
     </Grid>
   </Grid>

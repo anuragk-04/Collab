@@ -3,7 +3,11 @@ const User = require("./../models/userModel");
 
 const userConnectHandler = async (io, socket, userId, roomId) => {
     console.log(`userConnectHandler called with ${userId}, ${roomId}`);
-    
+    if (!userId || !roomId) {
+    console.error("Invalid userId or roomId:", userId, roomId);
+    socket.disconnect(); // Disconnect invalid connections
+    return;
+  }
     // add socket_id with userId in userSessions map to maintain the data
     addUserSession(userId, roomId, socket.id)
 

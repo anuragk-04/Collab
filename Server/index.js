@@ -33,7 +33,7 @@ mongoose
   .then(() => console.log("MongoDB is connected successfully"))
   .catch((err) => console.error(err));
 
-  setTimeout(() => {
+setTimeout(() => {
   initSocket(server); // Initialize socket.io
 }, 1000)
 
