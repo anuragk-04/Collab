@@ -6,12 +6,14 @@ import CursorOverlay from "./../components/cursorOverlay/CursorOverlay"
 import { connectWithSocketServer,disconnectSocketConnection } from "../socketConn/socketConn";
 import { Box, AppBar,Toolbar, Container, Grid, Stack, CircularProgress } from '@mui/material';
 import ChatApp from "../components/chatApp/ChatApp";
+import Editor from "../components/Editor/Editor";
 
 export const RoomPage = () => {
 
     const { roomId } = useParams()
     const [isSocketConnected, setIsSocketConnected] = useState(false);
     const [isChatAppOpen, setIsChatAppOpen] = useState(false);
+    const [isWhiteboard, setIsWhiteboard] = useState(true);
 
     useEffect(() => {
     console.log(`Connecting to socket server for roomId: ${roomId}`);
@@ -35,7 +37,7 @@ export const RoomPage = () => {
     <div>
         <Box>
             <Box>
-                <RoomNavbar setIsChatAppOpen={setIsChatAppOpen} isChatAppOpen={isChatAppOpen} />
+                <RoomNavbar setIsChatAppOpen={setIsChatAppOpen} isChatAppOpen={isChatAppOpen} setIsWhiteboard={setIsWhiteboard} isWhiteboard={isWhiteboard} />
             </Box>
             <Box bgcolor='#DDDDDD'
                 sx={{
@@ -45,11 +47,19 @@ export const RoomPage = () => {
                 }}
             >
                 <Box>
-                    <Whiteboard />
+                    {/* <Whiteboard /> */}
+                    {isSocketConnected ? (
+                        isWhiteboard?
+                        <Whiteboard />
+                        :
+                        <Editor />
+                    ) : (
+                        <CircularProgress />
+                    )}
                 </Box>
                 <Box 
                     sx={{
-                    position: "absolute",       // Makes ChatApp overlay the Whiteboard
+                    position: "fixed",       // Makes ChatApp overlay the Whiteboard
                     top: 0,                     // Position from the top
                     right: 0,                   // Position from the right
                     width: "26%",             // Adjust width as needed

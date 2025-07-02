@@ -152,3 +152,74 @@ export const disconnectSocketConnection = () => {
     console.log(`disconnect socket connection called!!!`);
     socket.disconnect();
 }
+
+let codeChangeHandler = null;
+
+export const joinEditor = (userName, roomId) => {
+    if (socket) {
+      console.log("joinEditor")
+    console.log(`roomId:${roomId}`)
+    socket.emit("JOIN-EDITOR", { user: userName, roomId }, (response) => {
+      if (response.error) {
+        console.error("Error joining editor room:", response.error);
+        return;
+      }
+      console.log("Editor room joined successfully:", response.success);
+    });
+  }
+  else{
+    console.log('No socket at join editor')
+  }
+};
+
+export const subscribeToJoinedEditor = (getCode,callback) => {
+    if (socket) {
+        if (codeChangeHandler) {
+            socket.off('CODE_CHANGE', codeChangeHandler);
+        }
+
+        codeChangeHandler = ({ code }) => {
+            if (code !== null) callback(code);
+        };
+
+        socket.on('JOINED_EDITOR', ({ user, socketId }) => {
+            console.log("JOINED_EDITOR")
+        const code = typeof getCode === 'function' ? getCode() : '';
+        socket.emit('SYNC_CODE', { code, socketId });
+        });
+    }
+};
+
+export const emitCodeChange = (roomId, code) => {
+    if (socket) {
+        socket.emit('CODE_CHANGE', { roomId, code });
+    }
+};
+
+export const subscribeToCodeChange = (callback) => {
+    if (socket) {
+        if (codeChangeHandler) {
+            socket.off('CODE_CHANGE', codeChangeHandler);
+        }
+
+        codeChangeHandler = ({ code }) => {
+            console.log("codechangehandler");
+            if (code !== null) callback(code);
+        };
+        console.log("codechange")
+        socket.on('CODE_CHANGE', codeChangeHandler);
+    }
+};
+
+export const unsubscribeFromCodeChange = () => {
+    if (socket && codeChangeHandler) {
+        socket.off('CODE_CHANGE', codeChangeHandler);
+        codeChangeHandler = null;
+    }
+};
+export const unsubscribeFromJoinedEditor = () => {
+    if (socket && codeChangeHandler) {
+        socket.off('SYNC_CODE', codeChangeHandler);
+        codeChangeHandler = null;
+    }
+};

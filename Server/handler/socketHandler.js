@@ -41,6 +41,23 @@ const initSocket = (server) => {
       await newMessage.save();
     });
 
+    socket.on("JOIN-EDITOR", ({ user, roomId }) => {
+      socket.join(roomId);
+      console.log(`${user} joined EDITOR room ${roomId}`);
+      socket.to(roomId).emit("JOINED_EDITOR", {
+                user,
+                socketId: socket.id,
+            });
+    });
+
+    socket.on("CODE_CHANGE", ({ roomId, code }) => {
+        socket.in(roomId).emit("CODE_CHANGE", { code });
+    });
+
+    socket.on("SYNC_CODE", ({code, socketId}) => {
+      console.log("SYNC CODE")
+        io.to(socketId).emit("CODE_CHANGE", { code });
+    });
 
     // event for board element update / new element creation
     socket.on("ELEMENT-UPDATE", async (eventData) => {

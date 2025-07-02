@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {Info } from '@mui/icons-material';
 import { fetchRoomInfo } from "../services/apiService";
 
-const RoomNavbar = ({setIsChatAppOpen, isChatAppOpen}) => {
+const RoomNavbar = ({setIsChatAppOpen, isChatAppOpen, setIsWhiteboard,isWhiteboard}) => {
   const roomName = localStorage.getItem('roomTitle');
   const boardMembers = useSelector((state) => state.whiteboard.activeUsers);
   const navigate = useNavigate();
@@ -47,11 +47,11 @@ const RoomNavbar = ({setIsChatAppOpen, isChatAppOpen}) => {
   };
 
   const handleDrawButtonClick = () => {
-    console.log('Draw clicked');
+    setIsWhiteboard(true);
   };
 
   const handleCodeButtonClick = () => {
-    console.log('Code clicked');
+    setIsWhiteboard(false);
   };
 
   const handleChatButtonClick = () => {

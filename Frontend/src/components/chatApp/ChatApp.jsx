@@ -73,7 +73,7 @@ const ChatApp = () => {
   sx={{
     width: '100%', // Make it responsive
     maxWidth: 400, // Optional: Limit max width
-    height: '92vh', // Full height
+    height: '93vh', // Full height
     borderRadius: 2, // Slightly more rounded
     bgcolor: 'primary.main',
     display: 'flex', // Flexbox for layout
