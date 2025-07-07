@@ -13,7 +13,7 @@ const initSocket = (server) => {
 
   io.on("connection", async (socket) => {
     const userId = socket.handshake.query.userId;
-    const roomId = socket.handshake.query.boardId;
+    const roomId = socket.handshake.query.roomId;
     console.log("Connection query params:", socket.handshake.query);
     console.log(`connect user called with User ID: ${userId}, roomId: ${roomId}`);
 

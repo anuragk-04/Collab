@@ -5,22 +5,22 @@ import { removeCursorPosition, updateCursorPosition } from '../components/cursor
 
 let socket;
 
-    export const connectWithSocketServer = (boardId) => {
+    export const connectWithSocketServer = (roomId) => {
     return new Promise((resolve, reject) => {
         const userId = localStorage.getItem('userId');
 
-        if (!userId || !boardId) {
-            reject('Missing userId or boardId');
+        if (!userId || !roomId) {
+            reject('Missing userId or roomId');
             return;
         }
 
-        console.log(`userid:${userId} roomid:${boardId}`);
+        console.log(`userid:${userId} roomid:${roomId}`);
 
         // Create a new socket connection
         socket = io('http://localhost:5002', {
             query: {
                 userId,
-                boardId,
+                roomId,
             },
         });
 
@@ -118,15 +118,15 @@ let socket;
 
 export const emitElementUpdate = (elementData) => {
     const eventData = {
-        "boardId": localStorage.getItem('boardId'),
+        "roomId": localStorage.getItem('roomId'),
         "boardElements": elementData 
     }
     socket.emit("ELEMENT-UPDATE", eventData);
 }
 
 export const emitClearWhiteboard = () => {
-    const boardId = localStorage.getItem('boardId');
-    socket.emit("WHITEBOARD-CLEAR", boardId);
+    const roomId = localStorage.getItem('roomId');
+    socket.emit("WHITEBOARD-CLEAR", roomId);
 }
 
 export const emitCursorPosition = (cursorData) => {
@@ -135,7 +135,7 @@ export const emitCursorPosition = (cursorData) => {
         x,
         y,
         username: localStorage.getItem('username'),
-        boardId: localStorage.getItem('boardId'),
+        roomId: localStorage.getItem('roomId'),
         userId: localStorage.getItem('userId')
     }
     socket.emit("CURSOR-POSITION", eventData)
