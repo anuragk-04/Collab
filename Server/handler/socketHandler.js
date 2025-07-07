@@ -2,6 +2,7 @@ const { Server } = require("socket.io");
 const { addUserSession } = require("../utils/userSocketDataStore");
 const { userConnectHandler, userDisconnectHandler, elementUpdateHandler, whiteboardClearHandler, cursorPositionHandler } = require("./socketEventHandler");
 const Message = require("./../models/messageModel");
+const EditorContent = require("../models/editorContentModel");
 
 const initSocket = (server) => {
   const io = new Server(server, {
@@ -44,19 +45,38 @@ const initSocket = (server) => {
     socket.on("JOIN-EDITOR", ({ user, roomId }) => {
       socket.join(roomId);
       console.log(`${user} joined EDITOR room ${roomId}`);
-      socket.to(roomId).emit("JOINED_EDITOR", {
+      io.to(roomId).emit("JOINED_EDITOR", {
                 user,
                 socketId: socket.id,
             });
     });
 
-    socket.on("CODE_CHANGE", ({ roomId, code }) => {
+    socket.on("CODE_CHANGE", async({ roomId, code }) => {
+        let roomEditorContent=await EditorContent.findOne({roomId});
+        if(!roomEditorContent){
+          roomEditorContent=new EditorContent({
+            roomId,
+            code:""
+          })
+        }
+        else
+        roomEditorContent.code=code;
+        await roomEditorContent.save();
         socket.in(roomId).emit("CODE_CHANGE", { code });
     });
 
-    socket.on("SYNC_CODE", ({code, socketId}) => {
-      console.log("SYNC CODE")
-        io.to(socketId).emit("CODE_CHANGE", { code });
+    socket.on("SYNC_CODE", async ({socketId, roomId}) => {
+        console.log("SYNC CODE")
+        let roomEditorContent=await EditorContent.findOne({roomId});
+        if(!roomEditorContent){
+          roomEditorContent=new EditorContent({
+            roomId,
+            code:""
+          })
+        }
+        console.log(roomId);
+        await roomEditorContent.save();
+        io.to(socketId).emit("CODE_CHANGE", { code:roomEditorContent.code });
     });
 
     // event for board element update / new element creation

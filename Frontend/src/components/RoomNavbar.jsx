@@ -123,6 +123,9 @@ const RoomNavbar = ({setIsChatAppOpen, isChatAppOpen, setIsWhiteboard,isWhiteboa
     <Grid item>
       <Button
         variant="contained"
+        sx={{
+            backgroundColor: isWhiteboard ? "#0d47a1":"#1976d2",
+        }}
         startIcon={<DrawIcon />}
         onClick={handleDrawButtonClick}
       >
@@ -132,6 +135,9 @@ const RoomNavbar = ({setIsChatAppOpen, isChatAppOpen, setIsWhiteboard,isWhiteboa
     <Grid item>
       <Button
         variant="contained"
+        sx={{
+            backgroundColor: !isWhiteboard ? "#0d47a1":"#1976d2",
+        }}
         startIcon={<CodeIcon />}
         onClick={handleCodeButtonClick}
       >
@@ -152,6 +158,9 @@ const RoomNavbar = ({setIsChatAppOpen, isChatAppOpen, setIsWhiteboard,isWhiteboa
     <Grid item>
       <Button
         variant="contained"
+        sx={{
+            backgroundColor: openRoomDetails ? "#0d47a1":"#1976d2",
+        }}
         startIcon={<Info />}
         onClick={handleClickOpenRoomInfo}
       >
@@ -162,6 +171,9 @@ const RoomNavbar = ({setIsChatAppOpen, isChatAppOpen, setIsWhiteboard,isWhiteboa
     <Grid item>
       <Button
         variant="contained"
+        sx={{
+            backgroundColor: isChatAppOpen ? "#0d47a1":"#1976d2",
+        }}
         startIcon={<ChatIcon />}
         onClick={handleChatButtonClick}
       >

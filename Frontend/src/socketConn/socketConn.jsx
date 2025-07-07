@@ -172,7 +172,7 @@ export const joinEditor = (userName, roomId) => {
   }
 };
 
-export const subscribeToJoinedEditor = (getCode,callback) => {
+export const subscribeToJoinedEditor = (callback,roomId) => {
     if (socket) {
         if (codeChangeHandler) {
             socket.off('CODE_CHANGE', codeChangeHandler);
@@ -183,9 +183,9 @@ export const subscribeToJoinedEditor = (getCode,callback) => {
         };
 
         socket.on('JOINED_EDITOR', ({ user, socketId }) => {
-            console.log("JOINED_EDITOR")
-        const code = typeof getCode === 'function' ? getCode() : '';
-        socket.emit('SYNC_CODE', { code, socketId });
+        console.log("JOINED_EDITOR")
+        // const code = typeof getCode === 'function' ? getCode() : '';
+        socket.emit('SYNC_CODE', {socketId,roomId});
         });
     }
 };

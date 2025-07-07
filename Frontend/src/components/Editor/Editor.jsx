@@ -37,17 +37,18 @@ const Editor = () => {
       lineNumbers: true,
     });
 
+    joinEditor(localStorage.getItem("username"), roomId);
     // Local change handler
     editorRef.current.on('change', (instance, changes) => {
       const { origin } = changes;
       const code = instance.getValue();
       codeRef.current = code;
-
+      
       if (origin !== 'setValue') {
         emitCodeChange(roomId, code);
       }
     });
-
+    
     // Setup socket sync after CodeMirror is initialized
     const codeChangeHandler = (code) => {
       if (
@@ -59,8 +60,7 @@ const Editor = () => {
       }
     };
 
-    joinEditor(localStorage.getItem("username"), roomId);
-    subscribeToJoinedEditor(() => codeRef.current, codeChangeHandler);
+    subscribeToJoinedEditor(codeChangeHandler,roomId);
     subscribeToCodeChange(codeChangeHandler);
 
     // Cleanup on unmount
