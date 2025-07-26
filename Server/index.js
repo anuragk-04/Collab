@@ -5,7 +5,7 @@ const http = require("http");
 const cors = require("cors");
 const cron = require('node-cron');
 require("dotenv").config();
-const { MONGO_URL, PORT } = process.env;
+const { MONGO_URL, PORT,  FRONTEND_URL } = process.env;
 
 const authRoute = require("./routes/authRoutes");
 const roomRoute = require("./routes/roomRoutes");
@@ -20,7 +20,7 @@ const { processCacheToDBStoreForBoardElements } = require("./utils/cronjobs");
 const server = http.createServer(app);
 
 app.use(cors({
-  origin: ["http://localhost:5173"],
+  origin: [FRONTEND_URL],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 }));
