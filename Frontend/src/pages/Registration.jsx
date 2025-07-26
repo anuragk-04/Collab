@@ -75,8 +75,8 @@ export const Registration = () => {
             Sign up
           </Typography>
           <Box component="form" ref={formRef} noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+            <Grid container spacing={2} >
+              <Grid item xs={12} sm={6} minWidth={'25vw'}>
                 <TextField
                   autoComplete="given-name"
                   name="firstName"
@@ -87,7 +87,7 @@ export const Registration = () => {
                   autoFocus
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={6} minWidth={'25vw'}>
                 <TextField
                   required
                   fullWidth
@@ -97,7 +97,7 @@ export const Registration = () => {
                   autoComplete="family-name"
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} minWidth={'25vw'}>
                 <TextField
                   required
                   fullWidth
@@ -107,7 +107,7 @@ export const Registration = () => {
                   autoComplete="email"
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} minWidth={'25vw'}>
                 <TextField
                   required
                   fullWidth
@@ -117,7 +117,7 @@ export const Registration = () => {
                   id="username"
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} minWidth={'25vw'}>
                 <TextField
                   required
                   fullWidth
@@ -138,9 +138,12 @@ export const Registration = () => {
               Sign Up
             </Button>
             <Grid container justifyContent="flex-end">
-              <Grid item>
+              <Grid item display={'flex'}>
+                <Typography>
+                Already have an account?
+                </Typography>
               <Link to="/login" variant="body2">
-                Already have an account? Sign in
+              LogIn
               </Link>
               </Grid>
             </Grid>

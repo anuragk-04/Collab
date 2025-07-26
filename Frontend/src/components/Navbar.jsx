@@ -15,7 +15,7 @@ export const Navbar = () => {
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                     Collab
                 </Typography>
-                <Button color="inherit" component={Link} to="/" style={{ textDecoration: 'none', color: 'inherit' }}>Home</Button>
+                {/* <Button color="inherit" component={Link} to="/" style={{ textDecoration: 'none', color: 'inherit' }}>Home</Button> */}
                 <Button color="inherit" component={Link} to="/login" style={{ textDecoration: 'none', color: 'inherit' }}>Login</Button>
                 <Button color="inherit" component={Link} to="/registration" style={{ textDecoration: 'none', color: 'inherit' }}>Registration</Button>
                 </Toolbar>

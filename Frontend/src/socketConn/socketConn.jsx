@@ -93,8 +93,9 @@ let socket;
     export const subscribeToChatMessages = (callback) => {
     if (socket) {
          // Remove any existing listeners for "CHAT-MESSAGE"
-        socket.off("CHAT-MESSAGE");
-        socket.on("CHAT-MESSAGE", (message) => {
+         socket.off("CHAT-MESSAGE");
+         socket.on("CHAT-MESSAGE", (message) => {
+            console.log(message.user);
         callback(message);
         });
     }

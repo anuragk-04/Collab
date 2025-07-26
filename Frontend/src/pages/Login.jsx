@@ -112,17 +112,17 @@ export const Login = () => {
             Sign In
           </Button>
           <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-            <Link to="/registration" variant="body2">
-              Don't have an account? Sign Up
-            </Link>
-            </Grid>
-          </Grid>
+        <Grid item display={'flex'} >
+            <Typography>
+              Don't have an account?{" "}
+            </Typography>
+
+          <Link to="/registration" variant="body2" >
+          SignUp
+          </Link>
+        </Grid>
+      </Grid>
+
         </Box>
       </Box>
 

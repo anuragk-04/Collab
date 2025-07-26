@@ -5,11 +5,11 @@ module.exports.getRoomMessages = async (req, res, next) => {
         const roomId = String(req.params.roomId); // Convert to string explicitly
         console.log(`Fetching messages for roomId: ${roomId}`);
         
-        const messages = await Message.find({ roomId });
+        let messages = await Message.find({ roomId });
 
         if (!messages.length) {
             console.log('No messages found for this room.');
-            return res.status(404).json({ message: 'No messages found' });
+            messages=[];
         }
 
         console.log(`Messages retrieved successfully: ${messages.length} messages`);

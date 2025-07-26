@@ -71,6 +71,51 @@ module.exports.createRoomWithMembers = async (req, res, next) => {
     }
 }
 
+module.exports.JoinUserToRoom = async (req, res, next) => {
+    try {
+        const { roomId, userId, role } = req.body;
+
+        const [room, user] = await Promise.all([
+            Room.findById(roomId),
+            User.findById(userId)
+        ]);
+
+        if (!room || !user) {
+            return res.status(404).json({
+                message: "Passed roomID or userId is invalid",
+                success: false
+            });
+        }
+
+        const isAlreadyMapped = room.members.some(member => member.memberId.equals(userId));
+
+        console.log(`isAlreadyMapped : ${isAlreadyMapped}`);
+        if (isAlreadyMapped) {
+            return res.status(202).json({
+                message: "User is already mapped with room",
+                success: true
+            });
+        }
+
+        room.members.push({
+            memberId: userId,
+            memberRole: role.toUpperCase(),
+            lastAccessedAt: null,
+        });
+
+        console.log(room.members);
+
+        const updatedRoom = await Room.findByIdAndUpdate(room._id, room, { new: true });
+
+        console.log(`updated room : ${updatedRoom}`);
+
+        res.status(200).json({ message: "User mapped to room successfully", success: true });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error", success: false });
+    }
+}
+
 module.exports.assignUserToRoom = async (req, res, next) => {
     try {
         const { roomId, userId, role } = req.body;

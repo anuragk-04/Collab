@@ -9,6 +9,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useDispatch, useSelector } from "react-redux";
 import {Info } from '@mui/icons-material';
 import { fetchRoomInfo } from "../services/apiService";
+import ConfirmModal from './ConfirmModal';
 
 const RoomNavbar = ({setIsChatAppOpen, isChatAppOpen, setIsWhiteboard,isWhiteboard}) => {
   const roomName = localStorage.getItem('roomTitle');
@@ -17,6 +18,7 @@ const RoomNavbar = ({setIsChatAppOpen, isChatAppOpen, setIsWhiteboard,isWhiteboa
   const [roomInfo, setRoomInfo] = useState(null);
   const [openActiveMembers, setOpenActiveMembers] = useState(false);
   const [openRoomDetails, setOpenRoomDetails] = useState(false);
+  const [openBackRoomConfirmDialog, setOpenBackRoomConfirmDialog] = useState(false);
 
   const handleClickOpenRoomInfo = async () => {
       try {
@@ -42,9 +44,19 @@ const RoomNavbar = ({setIsChatAppOpen, isChatAppOpen, setIsWhiteboard,isWhiteboa
   }
 
   const handleBackButtonClick = () => {
-    localStorage.removeItem('roomId');
-    navigate('../../rooms');
+    setOpenBackRoomConfirmDialog(true);
   };
+
+  const handleBackRoomConfirm = () => {
+        console.log(`handleBackRoomConfirm called...`);
+        localStorage.removeItem('roomId');
+        navigate('../../rooms');
+    }
+
+  const handleCloseBackRoomDialog = () => {
+        console.log(`handleCloseBackRoomDialog called...`);
+        setOpenBackRoomConfirmDialog(false);
+    };
 
   const handleDrawButtonClick = () => {
     setIsWhiteboard(true);
@@ -241,6 +253,13 @@ const RoomNavbar = ({setIsChatAppOpen, isChatAppOpen, setIsWhiteboard,isWhiteboa
                     </Button>
                 </DialogActions>
                 </Dialog>
+                <ConfirmModal
+                open={openBackRoomConfirmDialog}
+                title="Back to Rooms Page"
+                content="Are you sure you want to go back?"
+                onConfirm={handleBackRoomConfirm}
+                onClose={handleCloseBackRoomDialog}
+            />
      </div>
   );
 };

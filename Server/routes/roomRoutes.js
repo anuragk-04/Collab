@@ -1,6 +1,6 @@
-const { createRoom, assignUserToRoom, getRoomDetails, removeUserFromRoom, getRoomsForUser, deleteRoomById, createRoomWithMembers } = require("../controllers/roomController")
+const { createRoom, assignUserToRoom, getRoomDetails, removeUserFromRoom, getRoomsForUser, deleteRoomById, createRoomWithMembers, JoinUserToRoom } = require("../controllers/roomController")
 const { addElementsToBoard } = require('../controllers/boardElementController')
-const { getRoomMessages } = require('../controllers/messageController')
+const { getRoomMessages } = require('../controllers/messageController');
 
 const router = require("express").Router();
 
@@ -14,8 +14,10 @@ router.post('/createRoomWithMembers', createRoomWithMembers);
 router.post('/assignUser', assignUserToRoom);
 
 
-router.post('/removeUser', removeUserFromRoom);
+router.post('/joinRoom', JoinUserToRoom);
 
+
+router.post('/removeUser', removeUserFromRoom);
 
 
 router.get('/:roomId', getRoomDetails);
@@ -31,6 +33,7 @@ router.post('/addElementsToBoard/:roomId', addElementsToBoard);
 
 
 router.get("/:roomId/messages", getRoomMessages);
+
 
 
 // API for board element update via HTTP path with boardId

@@ -11,7 +11,7 @@ import { Profile } from "./pages/ProfilePage";
 
 
 const routes = [
-  { path: "/", element: <Home />, navbar: true },
+  { path: "/", element: <Login />, navbar: true },
   { path: "/login", element: <Login />, navbar: true },
   { path: "/registration", element: <Registration />, navbar: true },
   { path: "/rooms", element: <RoomsPage />, navbar: false },

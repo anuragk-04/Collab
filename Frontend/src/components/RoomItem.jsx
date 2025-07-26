@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Grid, Card, CardContent, Typography, Button, Stack } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import EditIcon from '@mui/icons-material/Edit';
-import EditRoomDialog from './EditRoomDialog';
+import ShareIcon from '@mui/icons-material/Share';
+import ShareRoomDialog from './ShareRoomDialog';
 import ConfirmModal from './ConfirmModal';
 import { useNavigate } from 'react-router-dom';
 import { deleteRoomById } from '../services/apiService';
@@ -12,16 +12,16 @@ const RoomItem = ({ roomId,roomTitle, name, description, role, memberCnt, lastAc
 
     const navigate = useNavigate();
 
-    const [openEditDialog, setOpenEditDialog] = useState(false); 
+    const [openShareDialog, setOpenShareDialog] = useState(false); 
     const [openDeleteConfirmDialog, setOpenDeleteConfirmDialog] = useState(false);
     const [openOpenRoomConfirmDialog, setOpenOpenRoomConfirmDialog] = useState(false);
 
-    const handleEditClick = () => {
-        setOpenEditDialog(true); 
+    const handleShareClick = () => {
+        setOpenShareDialog(true); 
     };
 
-    const handleCloseEditDialog = () => {
-        setOpenEditDialog(false);
+    const handleCloseShareDialog = () => {
+        setOpenShareDialog(false);
     };
 
     const handleOpenRoom = () => {
@@ -72,10 +72,7 @@ const RoomItem = ({ roomId,roomTitle, name, description, role, memberCnt, lastAc
                     <Grid container>
                         <Grid container direction={'column'} >
                             <Grid item xs={6}>
-                                <Typography variant="h6" component="div">
-                                    {name}
-                                </Typography>
-                                <Typography variant="body2">{description}</Typography>
+                                <Typography variant="h6" color='primary' sx={{fontWeight: 'bold'}}>{description}</Typography>
                             </Grid>
                             <Grid item xs={12}>
                                 <Typography variant="body2" className='mt-5'>
@@ -85,9 +82,7 @@ const RoomItem = ({ roomId,roomTitle, name, description, role, memberCnt, lastAc
                                     <Typography variant="body3"> 
                                         <span className='f-bold ml-20'>Members: </span> {memberCnt} 
                                     </Typography>
-                                    <Typography variant="body3"> 
-                                        <span className='f-bold ml-20'>Last accessed at:</span> { lastAccessedAt === null ? 'you haven\'t accessed yet.' : new Date().toDateString()} 
-                                    </Typography>
+                                    
                                 </Typography>
                             </Grid>
                         </Grid>
@@ -101,8 +96,8 @@ const RoomItem = ({ roomId,roomTitle, name, description, role, memberCnt, lastAc
                                     Open
                                 </Button>
                                 {(role === 'EDITOR' || role === 'OWNER') && 
-                                    <Button variant="outlined" startIcon={<EditIcon />}  onClick={handleEditClick}>
-                                        Edit
+                                    <Button variant="outlined" startIcon={<ShareIcon />}  onClick={handleShareClick}>
+                                        Share
                                     </Button>}
                             </Stack>
                         </Grid>
@@ -111,7 +106,7 @@ const RoomItem = ({ roomId,roomTitle, name, description, role, memberCnt, lastAc
                 </CardContent>
             </Card>
 
-            <EditRoomDialog open={openEditDialog} handleClose={handleCloseEditDialog} /> 
+            <ShareRoomDialog open={openShareDialog} handleClose={handleCloseShareDialog} roomId={roomId} roomDescription={description} roomName={roomTitle}/> 
             <ConfirmModal
                 open={openDeleteConfirmDialog}
                 title="Delete Confirmation"

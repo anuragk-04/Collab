@@ -24,18 +24,19 @@ const ChatApp = () => {
             const room = localStorage.getItem("roomId");
             console.log(`room called with roomId: ${room}`);
 
+            // Fetch previous messages
+            const prevMessages = await fetchMessagesForRoom(room);
+            setMessages(prevMessages);
+            console.log(messages);
             // Join the chat room
             joinChat(userName, room);
 
             // Subscribe to chat messages
             const chatListener = (newMessage) => {
+                console.log(newMessage);
                 setMessages((prev) => [...prev, newMessage]);
             };
             subscribeToChatMessages(chatListener);
-
-            // Fetch previous messages
-            const prevMessages = await fetchMessagesForRoom(room);
-            setMessages(prevMessages || []);
 
             // Set user and room info
             setUser(userName);
@@ -61,6 +62,7 @@ const ChatApp = () => {
   const sendMessage = (event) => {
     event.preventDefault();
     console.log('clicked');
+    console.log(message);
     if(message.trim()){
         sendMessageToServer({text:message, user}, roomId);
         setMessage("");
@@ -94,6 +96,7 @@ const ChatApp = () => {
       flexGrow: 1,
       overflowY: 'auto', // Scrollable messages area
     }}
+    bgcolor={'white'}
   >
     <Messages messages={messages} user={user} />
   </Box>

@@ -5,11 +5,13 @@ import RoomItem from '../components/RoomItem';
 import CreateNewRoom from '../components/CreateNewRoom';
 import AppHeader from '../components/AppHeader';
 import { Box } from '@mui/material';
+import JoinRoom from '../components/JoinRoom';
 
 export const RoomsPage = () => {
   const userId = localStorage.getItem('userId');
   
   const [isCreateNewRoomPage, setIsCreateNewRoomPage] = useState(false);
+  const [isJoinRoomPage, setIsJoinRoomPage] = useState(false);
   const [rooms, setRooms] = useState([]);
 
   useEffect(() => {
@@ -25,10 +27,13 @@ export const RoomsPage = () => {
     };
     
     fetchDataAsync();
-  }, []);
+  }, [isJoinRoomPage]);
 
   function handleToggleNewRoom() {
     setIsCreateNewRoomPage(!isCreateNewRoomPage);
+  }
+  function handleToggleJoinRoom() {
+    setIsJoinRoomPage(!isJoinRoomPage);
   }
   
   return (
@@ -36,17 +41,26 @@ export const RoomsPage = () => {
     <AppHeader />
     <Box sx={{ padding: '20px' }}>
       {/* Button Section */}
-      {!isCreateNewRoomPage && (
-        <Box sx={{ marginBottom: '20px', textAlign: 'center' }}>
+      <Box display={'flex'} justifyContent={'center'}>
+      {!isCreateNewRoomPage && !isJoinRoomPage && (
+        <Box sx={{ marginBottom: '20px', textAlign: 'center', pr: 1}}>
           <Button variant="contained" onClick={handleToggleNewRoom}>
             Create New Room
           </Button>
         </Box>
       )}
+      {!isJoinRoomPage && !isCreateNewRoomPage && (
+        <Box sx={{ marginBottom: '20px', textAlign: 'center', pl: 1}}>
+          <Button variant="contained" onClick={handleToggleJoinRoom} sx={{pl: 6, pr: 6}}>
+            Join Room
+          </Button>
+        </Box>
+      )}
+      </Box>
 
       {/* Rooms Grid Section */}
-      {!isCreateNewRoomPage && rooms.length > 0 && (
-        <Grid container spacing={3}>
+      {!isCreateNewRoomPage && !isJoinRoomPage&& rooms.length > 0 && (
+        <Grid container spacing={3} pt={3}>
           {rooms.map((room) => (
             <Grid item xs={12} sm={6} md={4} lg={3} key={room._id}>
               <Box
@@ -102,6 +116,12 @@ export const RoomsPage = () => {
       {isCreateNewRoomPage && (
         <Box>
           <CreateNewRoom canBtnHandler={handleToggleNewRoom} />
+        </Box>
+      )}
+      {/* Join Room Section */}
+      {isJoinRoomPage && (
+        <Box>
+          <JoinRoom canBtnHandler={handleToggleJoinRoom} />
         </Box>
       )}
     </Box>

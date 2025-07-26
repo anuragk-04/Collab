@@ -63,6 +63,17 @@ export const createRoomWithMembers = async (reqbody) => {
   }
 }
 
+export const JoinUserToRoom = async (reqbody) => {
+  try{
+    console.log('join')
+    const response = await axios.post(`${API_URL}/room/joinRoom`, reqbody);
+    return response.data;
+  }catch(error){
+    console.error('Error fetching data:', error);
+    throw error;
+  }
+}
+
 export const deleteRoomById = async (roomId) => {
   try{
     const response = await axios.delete(`${API_URL}/room/${roomId}`);
