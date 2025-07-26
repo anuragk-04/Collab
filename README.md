@@ -27,16 +27,16 @@
 
 ## 📸 Screenshot
 
-![Signup](./screenshots/SignupPage.png)
-![Signin](./screenshots/SigninPage.png)
-![Rooms Page ](./screenshots/RoomsPage.png)
-![Create new room](./screenshots/CreateNewRoomPage.png)
-![Share Room Id](./screenshots/ShareRoom.png)
-![Join room using room id](./screenshots/JoinRoomPage.png)
-![Whiteboard](./screenshots/Whiteboard.png)
-![CodeEditor](./screenshots/CodeEditor.png)
-![ChatRoom](./screenshots/ChatBox.png)
-![Profile](./screenshots/ProfilePage.png)
+![Signup](./ScreenShots/SignupPage.png)
+![Signin](./ScreenShots/SigninPage.png)
+![Rooms Page ](./ScreenShots/RoomsPage.png)
+![Create new room](./ScreenShots/CreateNewRoomPage.png)
+![Share Room Id](./ScreenShots/ShareRoom.png)
+![Join room using room id](./ScreenShots/JoinRoomPage.png)
+![Whiteboard](./ScreenShots/Whiteboard.png)
+![CodeEditor](./ScreenShots/CodeEditor.png)
+![ChatRoom](./ScreenShots/ChatBox.png)
+![Profile](./ScreenShots/ProfilePage.png)
 
 
 ---
