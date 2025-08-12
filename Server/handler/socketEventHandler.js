@@ -49,7 +49,7 @@ const elementUpdateHandler = async (io, socket, eventData) => {
     // console.log(`elementUpdateHandler called with ${roomId} & ${boardElements}`);
     
     // get board elements from cache
-    let boardElementsData = await getBoardElementByBoardId(roomId)
+    let boardElementsData = await getBoardElementByBoardId(roomId);
     // console.log(boardElementsData);
 
     // update element data on cache
@@ -71,6 +71,22 @@ const whiteboardClearHandler = async (io, roomId) => {
     // trigger WHITEBOARD-CLEAR event for roomId room
     io.to(roomId).emit('WHITEBOARD-CLEAR')
 }
+const whiteboardUndoHandler = async (io, socket, eventData) => {
+    const { roomId } = eventData;
+
+    // Get current board from DB
+    const currentBoard = await getBoardElementByBoardId(roomId);
+    if (!currentBoard || currentBoard.length === 0) return;
+
+    // Remove last element (undo)
+    const updatedBoard = currentBoard.slice(0, -1);
+
+    // Save updated state
+    await updateBoardElementWithBoardId(roomId, updatedBoard);
+
+    // Broadcast authoritative version to all clients
+    io.to(roomId).emit('WHITEBOARD-UNDO', {boardElements: updatedBoard} );
+};
 
 const cursorPositionHandler = async (io, socket, eventData) => {
     console.log(`cursorPositionHandler called with ${eventData}`);
@@ -90,5 +106,5 @@ const cursorPositionHandler = async (io, socket, eventData) => {
 }
 
 module.exports = {
-    userConnectHandler, userDisconnectHandler, elementUpdateHandler, whiteboardClearHandler, cursorPositionHandler
+    userConnectHandler, userDisconnectHandler, elementUpdateHandler, whiteboardClearHandler, cursorPositionHandler,whiteboardUndoHandler
 };

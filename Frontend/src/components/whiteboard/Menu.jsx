@@ -6,10 +6,11 @@ import pencilIcon from './../../resources/icons/pencil.svg';
 import textIcon from './../../resources/icons/text.svg';
 import selectionIcon from './../../resources/icons/selection.svg';
 import circleIcon from './../../resources/icons/circle.svg';
+import undoIcon from './../../resources/icons/undo.svg';
 import { toolTypes } from "./../../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { setElements, setToolType } from "./WhiteboardSlice";
-import { disconnectSocketConnection, emitClearWhiteboard } from "./../../socketConn/socketConn";
+import { disconnectSocketConnection, emitClearWhiteboard,emitWhiteboardUndo } from "./../../socketConn/socketConn";
 
 import { Button } from '@mui/material';
 import { ArrowBack, Info } from '@mui/icons-material';
@@ -23,9 +24,10 @@ import ImageIcon from '@mui/icons-material/Image';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 
-const CustomIconButton = ({ src, type, isRubber }) => {
+const CustomIconButton = ({ src, type, isRubber, isUndo }) => {
   const dispatch = useDispatch();
   const selectedToolType = useSelector((state) => state.whiteboard.tool);
+  const elements = useSelector((state) => state.whiteboard.elements);
 
   const handleToolChange = () => {
     dispatch(setToolType(type));
@@ -35,10 +37,15 @@ const CustomIconButton = ({ src, type, isRubber }) => {
     dispatch(setElements([]));
     emitClearWhiteboard();
   };
+  const handleUndo = () => {
+    if (elements.length === 0) return;
+    dispatch(setElements(elements.slice(0, -1)));
+    emitWhiteboardUndo();
+  };
 
   return (
     <button
-      onClick={isRubber ? handleClearCanvas : handleToolChange}
+      onClick={isRubber ? handleClearCanvas : isUndo? handleUndo : handleToolChange}
       className={
         selectedToolType === type ? "menu_button_active" : "menu_button"
       }
@@ -92,10 +99,11 @@ const Menu = ({canvasRef}) => {
                 <CustomIconButton className='ml-20' src={rectangleIcon} type={toolTypes.RECTANGLE} />
                 <CustomIconButton src={circleIcon} type={toolTypes.CIRCLE} />
                 <CustomIconButton src={lineIcon} type={toolTypes.LINE} />
-                <CustomIconButton src={rubberIcon} isRubber />
                 <CustomIconButton src={pencilIcon} type={toolTypes.PENCIL} />
                 <CustomIconButton src={textIcon} type={toolTypes.TEXT} />
                 <CustomIconButton src={selectionIcon} type={toolTypes.SELECTION} />
+                <CustomIconButton src={undoIcon} isUndo />
+                <CustomIconButton src={rubberIcon} isRubber />
             
                 <IconButton onClick={exportToImage} color="primary" aria-label="export to image">
                 <ImageIcon />

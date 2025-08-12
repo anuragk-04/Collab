@@ -74,6 +74,10 @@ let socket;
             console.log('WHITEBOARD-CLEAR received');
             store.dispatch(setElements([]));
         });
+        socket.on('WHITEBOARD-UNDO', ({boardElements}) => {
+            console.log('WHITEBOARD-UNDO received');
+            store.dispatch(setElements([...boardElements]));
+        });
 
         socket.on('CURSOR-POSITION', (cursorData) => {
             store.dispatch(updateCursorPosition(cursorData));
@@ -120,9 +124,15 @@ let socket;
 export const emitElementUpdate = (elementData) => {
     const eventData = {
         "roomId": localStorage.getItem('roomId'),
-        "boardElements": elementData 
+        "boardElements": elementData,
     }
     socket.emit("ELEMENT-UPDATE", eventData);
+}
+export const emitWhiteboardUndo = () => {
+    const eventData = {
+        "roomId": localStorage.getItem('roomId'),
+    }
+    socket.emit("WHITEBOARD-UNDO", eventData);
 }
 
 export const emitClearWhiteboard = () => {

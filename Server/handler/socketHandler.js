@@ -1,6 +1,6 @@
 const { Server } = require("socket.io");
 const { addUserSession } = require("../utils/userSocketDataStore");
-const { userConnectHandler, userDisconnectHandler, elementUpdateHandler, whiteboardClearHandler, cursorPositionHandler } = require("./socketEventHandler");
+const { userConnectHandler, userDisconnectHandler, elementUpdateHandler, whiteboardClearHandler, cursorPositionHandler, whiteboardUndoHandler } = require("./socketEventHandler");
 const Message = require("./../models/messageModel");
 const EditorContent = require("../models/editorContentModel");
 
@@ -84,6 +84,11 @@ const initSocket = (server) => {
       console.log(`ELEMENT-UPDATE called `);
       // console.log(eventData);
       await elementUpdateHandler(io, socket, eventData);
+    });
+    socket.on("WHITEBOARD-UNDO", async (eventData) => {
+      console.log(`WHITEBOARD-UNDO called `);
+      // console.log(eventData);
+      await whiteboardUndoHandler(io, socket,eventData);
     });
 
     // event for board clean event
