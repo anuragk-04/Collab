@@ -17,6 +17,7 @@ import {
 import { v4 as uuid } from "uuid";
 import { updateElement as updateElementInStore } from "./whiteboardSlice";
 import { emitCursorPosition } from "./../../socketConn/socketConn";
+import { updateCursorPosition } from "../cursorOverlay/CursorSlice";
 
 let emitCursor = true;
 let lastCursorPosition;
@@ -162,8 +163,8 @@ const Whiteboard = () => {
 
   const handleMouseMove = (event) => {
     const { clientX, clientY } = event;
-
     lastCursorPosition = {x: clientX, y : clientY}
+    dispatch(updateCursorPosition({x:clientX,y:clientY,userId:localStorage.getItem('userId'),username:localStorage.getItem('username')}));
 
     if(emitCursor){
       emitCursorPosition({x : clientX, y: clientY})

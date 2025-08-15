@@ -7,6 +7,7 @@ import { connectWithSocketServer,disconnectSocketConnection } from "../socketCon
 import { Box, AppBar,Toolbar, Container, Grid, Stack, CircularProgress } from '@mui/material';
 import ChatApp from "../components/chatApp/ChatApp";
 import Editor from "../components/Editor/Editor";
+import { useSelector } from "react-redux";
 
 export const RoomPage = () => {
 
@@ -14,6 +15,10 @@ export const RoomPage = () => {
     const [isSocketConnected, setIsSocketConnected] = useState(false);
     const [isChatAppOpen, setIsChatAppOpen] = useState(false);
     const [isWhiteboard, setIsWhiteboard] = useState(true);
+
+    const cursor = useSelector(state => state.cursor.cursors);
+
+    // console.log(cursor);
 
     useEffect(() => {
     console.log(`Connecting to socket server for roomId: ${roomId}`);
@@ -50,7 +55,11 @@ export const RoomPage = () => {
                     {/* <Whiteboard /> */}
                     {isSocketConnected ? (
                         isWhiteboard?
-                        <Whiteboard />
+                        <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+                            <Whiteboard />
+                            <CursorOverlay />
+                        </div>
+
                         :
                         <Editor />
                     ) : (
@@ -59,15 +68,15 @@ export const RoomPage = () => {
                 </Box>
                 <Box 
                     sx={{
-                    position: "fixed",       // Makes ChatApp overlay the Whiteboard
-                    top: 0,                     // Position from the top
-                    right: 0,                   // Position from the right
-                    width: "26%",             // Adjust width as needed
-                    height: "100%",             // Full height overlay
-                    backgroundColor: "white",   // Background for ChatApp
-                    boxShadow: "0 0 10px rgba(0,0,0,0.3)", // Optional shadow for better visibility
-                    zIndex: 10,                 // Ensures it appears above other content
-                    display: isChatAppOpen ? "block" : "none", // Toggle visibility
+                    position: "fixed",  
+                    top: 0,          
+                    right: 0,      
+                    width: "26%",            
+                    height: "100%",          
+                    backgroundColor: "white",  
+                    boxShadow: "0 0 10px rgba(0,0,0,0.3)",
+                    zIndex: 10,                
+                    display: isChatAppOpen ? "block" : "none",
                 }}
                 >
                     {isSocketConnected ? (

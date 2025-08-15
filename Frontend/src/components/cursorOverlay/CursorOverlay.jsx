@@ -4,9 +4,12 @@ import cursor from './../../resources/icons/selection.svg';
 
 const CursorOverlay = () => {
   const cursors = useSelector((state) => state.cursor.cursors)
+  const userId=localStorage.getItem('userId');
 
   return <>
-    {cursors.map((c) => (
+    {cursors
+    .filter(c => c.userId !== userId)
+    .map((c) => (
       <div key={c.userId}>
         <p style={{
         position: 'absolute',

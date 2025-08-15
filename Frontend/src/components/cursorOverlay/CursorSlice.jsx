@@ -9,6 +9,7 @@ const cursorSlice = createSlice({
     initialState,
     reducers: {
         updateCursorPosition: (state, action) => {
+            // console.log("Updating cursor:", action.payload);
             const {x, y, userId, username} = action.payload
             const index = state.cursors.findIndex((cursor)=> cursor.userId === userId)
             if(index !== -1){
