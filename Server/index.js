@@ -5,7 +5,9 @@ const cors = require("cors");
 const cron = require("node-cron");
 require("dotenv").config();
 
-const { MONGO_URL, PORT, FRONTEND_URL } = process.env;
+const  FRONTEND_URL = "https://dapper-lamington-6dff42.netlify.app/";
+
+const { MONGO_URL, PORT} = process.env;
 
 const authRoute = require("./routes/authRoutes");
 const roomRoute = require("./routes/roomRoutes");
