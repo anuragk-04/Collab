@@ -52,6 +52,11 @@
 | Real-Time Communication   | Socket.IO                             |
 
 
+## 🚀 Live Demo
+
+You can try out a live version of the application here:
+
+[**Try Collab Live!**](https://dapper-lamington-6dff42.netlify.app/)
 
 ## 🚀 Getting Started
 
