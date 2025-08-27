@@ -28,7 +28,7 @@
 
 You can try out a live version of the application here:
 
-[**Try Collab Live!**](https://dapper-lamington-6dff42.netlify.app/)
+[**Try Collab Live!**](https://dapper-lamingt.netlify.app/)
 
 ---
 
