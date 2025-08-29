@@ -2,6 +2,13 @@
 
 **Collab** is a real-time collaborative web application that brings together a **code editor**, **whiteboard**, and **chatroom** — all inside a multi-user room environment. It’s designed to enhance collaborative coding, brainstorming, and teaching sessions with smooth real-time interactions.
 
+---
+
+## 🚀 Live Demo
+
+You can try out a live version of the application here:
+
+[**Try Collab Live!**](https://dapper-lamingt.netlify.app/)
 
 ---
 
@@ -23,12 +30,7 @@
   - Each room supports multiple participants simultaneously
   - State sync using **Socket.IO**
 
----
-## 🚀 Live Demo
 
-You can try out a live version of the application here:
-
-[**Try Collab Live!**](https://dapper-lamingt.netlify.app/)
 
 ---
 
