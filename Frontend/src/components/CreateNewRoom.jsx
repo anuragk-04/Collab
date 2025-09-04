@@ -92,7 +92,7 @@ const CreateNewRoom = ({canBtnHandler}) => {
       
             formRef.current.reset();
             
-            window.location.reload();
+            // window.location.reload();
             navigate('/rooms');
         } catch (error) {
             console.log(`error while creating room : ${error}`);
