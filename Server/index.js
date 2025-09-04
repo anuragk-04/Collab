@@ -5,7 +5,7 @@ const cors = require("cors");
 const cron = require("node-cron");
 require("dotenv").config();
 
-const FRONTEND_URL = "https://dapper-lamingt.netlify.app/";
+const FRONTEND_URL = "https://dapper-lamingt.netlify.app";
 
 const { MONGO_URL, PORT} = process.env;
 
