@@ -23,14 +23,13 @@ const app = express();
 const server = http.createServer(app);
 
 // ✅ Robust CORS setup
-app.use(
-  cors({
-    origin: FRONTEND_URL || "*", // fallback to allow all in case env var is missing
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-  })
-);
+const corsOptions= {
+  origin: FRONTEND_URL,
+  credentials: true,
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 
 // MongoDB connection
 mongoose
