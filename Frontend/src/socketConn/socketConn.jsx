@@ -17,7 +17,7 @@ let socket;
         console.log(`userid:${userId} roomid:${roomId}`);
 
         // Create a new socket connection
-        socket = io('http://localhost:5002', {
+        socket = io('https://collab-g94w.onrender.com', {
             query: {
                 userId,
                 roomId,

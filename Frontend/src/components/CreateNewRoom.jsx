@@ -69,38 +69,43 @@ const CreateNewRoom = ({canBtnHandler}) => {
     };
 
     const handleSubmit = async (event) => {
-        event.preventDefault();
+    event.preventDefault();
 
-        const members = [
-            { memberId: userId, role: 'OWNER' },
-            ...addedMembers.map(addedMember => ({ memberId: addedMember._id, role: addedMember.role }))
-        ];
+    const members = [
+        { memberId: userId, role: 'OWNER' },
+        ...addedMembers.map(addedMember => ({ memberId: addedMember._id, role: addedMember.role }))
+    ];
 
-        const reqBody = {
-            roomTitle,
-            roomDescription,
-            members: members
-        };
-        console.log(reqBody);
-
-        try {
-            const responseData = await createRoomWithMembers(reqBody); 
-            console.log(responseData);
-      
-            setSnackbarMessage('Room created successfully!!');
-            setOpenSnackbar(true);
-      
-            formRef.current.reset();
-            
-            // window.location.reload();
-            navigate('/rooms');
-        } catch (error) {
-            console.log(`error while creating room : ${error}`);
-            
-            setSnackbarMessage('Error while creating room!!');
-            setOpenSnackbar(true);
-        }
+    const reqBody = {
+        roomTitle,
+        roomDescription,
+        members
     };
+    console.log(reqBody);
+
+    try {
+        const responseData = await createRoomWithMembers(reqBody); 
+        console.log(responseData);
+
+        setSnackbarMessage('Room created successfully!!');
+        setOpenSnackbar(true);
+
+        // reset state instead of formRef.reset()
+        setRoomTitle('');
+        setRoomDescription('');
+        setAddedMembers([]);
+
+        // navigate after a short delay
+        setTimeout(() => {
+            canBtnHandler();
+        }, 1000);
+    } catch (error) {
+        console.log(`error while creating room : ${error}`);
+        setSnackbarMessage('Error while creating room!!');
+        setOpenSnackbar(true);
+    }
+};
+
 
     return (
         <>
