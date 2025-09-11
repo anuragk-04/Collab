@@ -28,7 +28,7 @@ const initSocket = (server) => {
     socket.on("JOIN-CHAT", ({ user, roomId }) => {
       socket.join(roomId);
       console.log(`${user} joined chat room ${roomId}`);
-      io.to(roomId).emit("CHAT-MESSAGE", { user: "Admin", text: `${user} has joined the chat!` });
+      socket.to(roomId).emit("CHAT-MESSAGE", { user: "Admin", text: `${user} has joined the chat!` });
     });
     // Chat: Send Message
     socket.on("SEND-MESSAGE",async ( {roomId, message} ) => {
