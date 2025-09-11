@@ -1,266 +1,273 @@
-import {react, useState} from 'react';
-import { Grid, Button, Typography, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import DrawIcon from '@mui/icons-material/Draw';
-import CodeIcon from '@mui/icons-material/Code';
-import ChatIcon from '@mui/icons-material/Chat';
-import CallIcon from '@mui/icons-material/Call';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { useDispatch, useSelector } from "react-redux";
-import {Info } from '@mui/icons-material';
+import { useState, useEffect } from "react";
+import {
+  Grid,
+  Button,
+  Typography,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import DrawIcon from "@mui/icons-material/Draw";
+import CodeIcon from "@mui/icons-material/Code";
+import ChatIcon from "@mui/icons-material/Chat";
+import CallIcon from "@mui/icons-material/Call";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useSelector } from "react-redux";
+import { Info } from "@mui/icons-material";
+import axios from "axios";
 import { fetchRoomInfo } from "../services/apiService";
-import ConfirmModal from './ConfirmModal';
+import ConfirmModal from "./ConfirmModal";
+import VoiceRoom from "./VoiceRoom/voiceRoom";
 
-const RoomNavbar = ({setIsChatAppOpen, isChatAppOpen, setIsWhiteboard,isWhiteboard}) => {
-  const roomName = localStorage.getItem('roomTitle');
+const RoomNavbar = ({
+  setIsChatAppOpen,
+  isChatAppOpen,
+  setIsWhiteboard,
+  isWhiteboard,
+}) => {
+  const roomName = localStorage.getItem("roomTitle");
+  const roomId = localStorage.getItem("roomId"); // Agora channel name
   const boardMembers = useSelector((state) => state.whiteboard.activeUsers);
   const navigate = useNavigate();
-  const [roomInfo, setRoomInfo] = useState(null);
-  const [openActiveMembers, setOpenActiveMembers] = useState(false);
-  const [openRoomDetails, setOpenRoomDetails] = useState(false);
-  const [openBackRoomConfirmDialog, setOpenBackRoomConfirmDialog] = useState(false);
 
-  const handleClickOpenRoomInfo = async () => {
-      try {
-        const response = await fetchRoomInfo(localStorage.getItem('roomId'));
-        console.log(response);
-        setRoomInfo(response.room);
-        setOpenRoomDetails(true);
-      } catch (error) {
-        console.log(error);
+  const [roomInfo, setRoomInfo] = useState(null);
+  const [openRoomDetails, setOpenRoomDetails] = useState(false);
+  const [openBackRoomConfirmDialog, setOpenBackRoomConfirmDialog] =
+    useState(false);
+
+  // 🎤 Voice Chat state
+  const [isVoiceOpen, setIsVoiceOpen] = useState(false);
+  const [voiceToken, setVoiceToken] = useState(null);
+  const [loadingToken, setLoadingToken] = useState(false);
+
+  // Fetch token whenever voice is toggled ON
+  useEffect(() => {
+    const fetchToken = async () => {
+      if (isVoiceOpen) {
+        try {
+          setLoadingToken(true);
+          const res = await axios.get(
+            `${import.meta.env.VITE_BACKEND_URL}/agora/token`,
+            { params: { channelName: roomId } }
+          );
+          setVoiceToken(res.data.token);
+        } catch (err) {
+          console.error("Failed to fetch Agora token", err);
+          setIsVoiceOpen(false); // Close if token fails
+        } finally {
+          setLoadingToken(false);
+        }
+      } else {
+        setVoiceToken(null);
       }
     };
-  
-    const handleCloseRoomInfo = () => {
-      setOpenRoomDetails(false);
-    };
 
-    const handleAvatarIconsClick = () => {
-    setOpenActiveMembers(true);
-  }
+    fetchToken();
+  }, [isVoiceOpen, roomId]);
 
-  const handleActiveIconsClose = () => {
-    setOpenActiveMembers(false);
-  }
+  const handleClickOpenRoomInfo = async () => {
+    try {
+      const response = await fetchRoomInfo(localStorage.getItem("roomId"));
+      setRoomInfo(response.room);
+      setOpenRoomDetails(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleBackButtonClick = () => {
     setOpenBackRoomConfirmDialog(true);
   };
 
   const handleBackRoomConfirm = () => {
-        console.log(`handleBackRoomConfirm called...`);
-        localStorage.removeItem('roomId');
-        navigate('../../rooms');
-    }
-
-  const handleCloseBackRoomDialog = () => {
-        console.log(`handleCloseBackRoomDialog called...`);
-        setOpenBackRoomConfirmDialog(false);
-    };
-
-  const handleDrawButtonClick = () => {
-    setIsWhiteboard(true);
+    localStorage.removeItem("roomId");
+    navigate("../../rooms");
   };
 
-  const handleCodeButtonClick = () => {
-    setIsWhiteboard(false);
-  };
+  const handleDrawButtonClick = () => setIsWhiteboard(true);
+  const handleCodeButtonClick = () => setIsWhiteboard(false);
+  const handleChatButtonClick = () => setIsChatAppOpen((x) => !x);
 
-  const handleChatButtonClick = () => {
-    console.log('Chat clicked');
-    setIsChatAppOpen((x)=>!x)
-  };
-
+  // 🎤 Voice toggle
   const handleCallButtonClick = () => {
-    console.log('Call clicked');
+    setIsVoiceOpen((prev) => !prev);
   };
 
   return (
     <div>
       <Grid
-  container
-  alignItems="center"
-  justifyContent="space-between"
-  sx={{
-    position: "fixed", // Fixes the layout at the top
-    top: 0,            // Aligns it to the top of the viewport
-    left: 0,           // Ensures it spans the full width
-    width: "100%",     // Full width
-    zIndex: 1000,      // Keeps it above other elements
-    height: 60,        // Fixed height
-    bgcolor: "#aecbeb", // Background color
-    paddingX: 1,       // Horizontal padding
-    boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.2)", // Optional shadow for depth
-  }}
->
-  {/* Left Section: Back Button and Room Name */}
-  <Grid
-    item
-    xs={12}
-    sm={4}
-    container
-    alignItems="center"
-    paddingLeft={1}
-    spacing={2}
-  >
-    <Grid item>
-      <Button
-        variant="contained"
-        startIcon={<ArrowBackIcon />}
-        onClick={handleBackButtonClick}
-      >
-        Back
-      </Button>
-    </Grid>
-    <Grid item>
-      <Typography
-        variant="h6"
-        color="#1B4F72"
-        sx={{ flexGrow: 1 }}
-      >
-        {roomName}
-      </Typography>
-    </Grid>
-  </Grid>
-
-  {/* Center Section: Tools */}
-  <Grid
-    item
-    xs={12}
-    sm={4}
-    container
-    justifyContent="center"
-    spacing={2}
-  >
-    <Grid item>
-      <Button
-        variant="contained"
+        container
+        alignItems="center"
+        justifyContent="space-between"
         sx={{
-            backgroundColor: isWhiteboard ? "#0d47a1":"#1976d2",
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          zIndex: 1000,
+          height: 60,
+          bgcolor: "#aecbeb",
+          paddingX: 1,
+          boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.2)",
         }}
-        startIcon={<DrawIcon />}
-        onClick={handleDrawButtonClick}
       >
-        Draw
-      </Button>
-    </Grid>
-    <Grid item>
-      <Button
-        variant="contained"
-        sx={{
-            backgroundColor: !isWhiteboard ? "#0d47a1":"#1976d2",
-        }}
-        startIcon={<CodeIcon />}
-        onClick={handleCodeButtonClick}
-      >
-        Code
-      </Button>
-    </Grid>
-  </Grid>
+        {/* Left Section: Back Button + Room Name */}
+        <Grid
+          item
+          xs={12}
+          sm={4}
+          container
+          alignItems="center"
+          paddingLeft={1}
+          spacing={2}
+        >
+          <Grid item>
+            <Button
+              variant="contained"
+              startIcon={<ArrowBackIcon />}
+              onClick={handleBackButtonClick}
+            >
+              Back
+            </Button>
+          </Grid>
+          <Grid item>
+            <Typography variant="h6" color="#1B4F72" sx={{ flexGrow: 1 }}>
+              {roomName}
+            </Typography>
+          </Grid>
+        </Grid>
 
-  {/* Right Section: Chat and Info */}
-  <Grid
-    item
-    xs={12}
-    sm={4}
-    container
-    justifyContent="flex-end"
-    spacing={2}
-  >
-    <Grid item>
-      <Button
-        variant="contained"
-        sx={{
-            backgroundColor: openRoomDetails ? "#0d47a1":"#1976d2",
-        }}
-        startIcon={<Info />}
-        onClick={handleClickOpenRoomInfo}
-      >
-        Info
-      </Button>
-    </Grid>
+        {/* Center Section: Tools */}
+        <Grid
+          item
+          xs={12}
+          sm={4}
+          container
+          justifyContent="center"
+          spacing={2}
+        >
+          <Grid item>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: isWhiteboard ? "#0d47a1" : "#1976d2",
+              }}
+              startIcon={<DrawIcon />}
+              onClick={handleDrawButtonClick}
+            >
+              Draw
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: !isWhiteboard ? "#0d47a1" : "#1976d2",
+              }}
+              startIcon={<CodeIcon />}
+              onClick={handleCodeButtonClick}
+            >
+              Code
+            </Button>
+          </Grid>
+        </Grid>
 
-    <Grid item>
-      <Button
-        variant="contained"
-        sx={{
-            backgroundColor: isChatAppOpen ? "#0d47a1":"#1976d2",
-        }}
-        startIcon={<ChatIcon />}
-        onClick={handleChatButtonClick}
-      >
-        Chat
-      </Button>
-    </Grid>
-    <Grid item>
-      <Button
-        variant="contained"
-        startIcon={<CallIcon />}
-        onClick={handleCallButtonClick}
-      >
-        Voice
-      </Button>
-    </Grid>
-  </Grid>
-</Grid>
+        {/* Right Section: Chat, Info, Voice */}
+        <Grid
+          item
+          xs={12}
+          sm={4}
+          container
+          justifyContent="flex-end"
+          spacing={2}
+        >
+          <Grid item>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: openRoomDetails ? "#0d47a1" : "#1976d2",
+              }}
+              startIcon={<Info />}
+              onClick={handleClickOpenRoomInfo}
+            >
+              Info
+            </Button>
+          </Grid>
 
+          <Grid item>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: isChatAppOpen ? "#0d47a1" : "#1976d2",
+              }}
+              startIcon={<ChatIcon />}
+              onClick={handleChatButtonClick}
+            >
+              Chat
+            </Button>
+          </Grid>
 
+          <Grid item>
+            <Button
+              variant="contained"
+              disabled={loadingToken}
+              sx={{
+                backgroundColor: isVoiceOpen ? "red" : "#1976d2",
+              }}
+              startIcon={<CallIcon />}
+              onClick={handleCallButtonClick}
+            >
+              {isVoiceOpen ? "Leave" : loadingToken ? "..." : "Voice"}
+            </Button>
+          </Grid>
+        </Grid>
+      </Grid>
 
+      {/* 🎤 Mount VoiceRoom only when active and token available */}
+      {isVoiceOpen && voiceToken && (
+        <VoiceRoom
+          channelName={roomId}
+          appId={import.meta.env.VITE_AGORA_APP_ID}
+          token={voiceToken}
+          uid={null}
+          onLeave={() => setIsVoiceOpen(false)}
+        />
+      )}
+
+      {/* Room Info Modal */}
       {roomInfo && (
-              <Dialog open={openRoomDetails} onClose={handleCloseRoomInfo} aria-labelledby="room-details-dialog-title">
-                <DialogTitle id="room-details-dialog-title">Room Details</DialogTitle>
-                <DialogContent>
-                  <Typography variant="h6" component="div">
-                    {roomInfo.roomTitle}
-                  </Typography>
-                  <Typography variant="body2" color="textPrimary" component="div" style={{ marginTop: 2 }}>
-                    Description: {roomInfo.roomDescription}
-                  </Typography>
-                  <Typography variant="body2" color="textPrimary" component="div" style={{ marginTop: 15 }}>
-                    Members: {roomInfo.members.length}
-                  </Typography>
-                  {roomInfo.members.map((member, index) => (
-                    <Typography key={index} variant="body2" color="textPrimary" component="div" style={{ marginTop: 1 }}>
-                      {member.memberId} | {member.memberRole} | {member.lastAccessedAt}
-                    </Typography>
-                  ))}
-                  <Typography variant="body2" color="textPrimary" component="div" style={{ marginTop: 15 }}>
-                    Created At: {roomInfo.createdAt}
-                  </Typography>
-                  <Typography variant="body2" color="textPrimary" component="div" style={{ marginTop: 1 }}>
-                    Updated At: {roomInfo.updatedAt}
-                  </Typography>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleCloseRoomInfo} color="primary">
-                    Close
-                  </Button>
-                </DialogActions>
-              </Dialog>
-            )}
-            <Dialog open={openActiveMembers} onClose={handleActiveIconsClose} aria-labelledby="active-members-dialog-title">
-                <DialogTitle id="active-members-dialog-title">Active Members</DialogTitle>
-                <DialogContent>
-                    {boardMembers && boardMembers.map((member, index) => (
-                    <Typography key={index} variant="body2" color="textPrimary" component="div" style={{ marginTop: 1 }}>
-                        {member.email} | {member.username} | {member.firstName} | {member.lastName}
-                    </Typography>
-                    ))}
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleActiveIconsClose} color="primary">
-                    Close
-                    </Button>
-                </DialogActions>
-                </Dialog>
-                <ConfirmModal
-                open={openBackRoomConfirmDialog}
-                title="Back to Rooms Page"
-                content="Are you sure you want to go back?"
-                onConfirm={handleBackRoomConfirm}
-                onClose={handleCloseBackRoomDialog}
-            />
-     </div>
+        <Dialog
+          open={openRoomDetails}
+          onClose={() => setOpenRoomDetails(false)}
+        >
+          <DialogTitle>Room Details</DialogTitle>
+          <DialogContent>
+            <Typography variant="h6">{roomInfo.roomTitle}</Typography>
+            <Typography>Description: {roomInfo.roomDescription}</Typography>
+            <Typography>Members: {roomInfo.members.length}</Typography>
+            {roomInfo.members.map((m, i) => (
+              <Typography key={i}>
+                {m.memberId} | {m.memberRole}
+              </Typography>
+            ))}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenRoomDetails(false)}>Close</Button>
+          </DialogActions>
+        </Dialog>
+      )}
+
+      {/* Back Confirmation Modal */}
+      <ConfirmModal
+        open={openBackRoomConfirmDialog}
+        title="Back to Rooms Page"
+        content="Are you sure you want to go back?"
+        onConfirm={handleBackRoomConfirm}
+        onClose={() => setOpenBackRoomConfirmDialog(false)}
+      />
+    </div>
   );
 };
 
