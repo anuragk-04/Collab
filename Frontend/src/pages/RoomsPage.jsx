@@ -27,7 +27,7 @@ export const RoomsPage = () => {
     };
     
     fetchDataAsync();
-  }, [isJoinRoomPage, isCreateNewRoomPage, rooms]);
+  }, [isJoinRoomPage, isCreateNewRoomPage]);
 
   function handleToggleNewRoom() {
     setIsCreateNewRoomPage(!isCreateNewRoomPage);
